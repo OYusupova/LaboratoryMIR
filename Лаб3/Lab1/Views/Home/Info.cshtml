@@ -1,0 +1,49 @@
+﻿@model Lab.Models.DataModel
+
+@{
+    ViewBag.Title = "Просмотр личной карточки";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<fieldset>
+    <legend>Личная карточка</legend>
+    
+    <p>
+        <span class="display-label">
+            @Html.DisplayNameFor(model => model.SurName)
+        </span>
+        <span class="display-field">
+            @Html.DisplayFor(model => model.SurName)
+        </span>
+    </p>
+    <p>
+        <span class="display-label">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </span>
+        <span class="display-field">
+            @Html.DisplayFor(model => model.FirstName)
+        </span>
+    </p>
+    <p>
+        <span class="display-label">
+            @Html.DisplayNameFor(model => model.MiddleName)
+        </span>
+        <span class="display-field">
+            @Html.DisplayFor(model => model.MiddleName)
+        </span>
+    </p>
+    <p>
+        <span class="display-label">
+            @Html.DisplayNameFor(model => model.BirthDay)
+        </span>
+        <span class="display-field">
+            @Html.DisplayFor(model => model.BirthDay)
+        </span>
+    </p>
+
+</fieldset>
+<p>
+  @Html.ActionLink("На главную", "Index")
+  @Html.ActionLink("К списку", "List")
+</p>

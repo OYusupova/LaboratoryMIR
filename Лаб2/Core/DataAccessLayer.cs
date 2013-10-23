@@ -33,6 +33,10 @@ namespace Core
         {
             return Persons.FirstOrDefault(x => x.Id == id);
         }
+        public static Persondell DPersondell (int id)
+        {
+            return Persons.FirstOrDefault(x => x.Id == id-1);
+        }
 
     }
 }
