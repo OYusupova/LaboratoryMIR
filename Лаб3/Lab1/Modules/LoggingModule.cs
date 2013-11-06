@@ -5,7 +5,7 @@ using Lab.Log;
 
 namespace Lab.Modules
 {
-    public class LoggingModule: IHttpModule
+    public class LoggingModule : IHttpModule
     {
         private readonly LogManager _logManager;
 
@@ -31,3 +31,4 @@ namespace Lab.Modules
         }
     }
 }
+

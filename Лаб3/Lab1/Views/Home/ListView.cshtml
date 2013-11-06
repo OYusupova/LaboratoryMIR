@@ -6,6 +6,73 @@
 
 <h2>ListView</h2>
 
+<script id="personTemplate" type="text/html">  
+    <tr>
+        <td><p data-bind = "text: SurName"></td>
+        <td><p data-bind = "text: FirstName"></td>
+        <td><p data-bind = "text: MiddleName"></td>
+        <td> 
+            <a href='Delete' data-bind="click: function () { $parent.Delete(Id()) } ">Удалить</a>
+            <span id="loading" style="display: none;">
+                <img src='@Href("~/Content/Images/Wait.gif")' alt="Ждите" />
+            </span>
+        </td>
+        <td>
+            <a href='Details' data-bind=" click: function () { $parent.Details(Id()) } ">Детали</a>
+        </td>
+    </tr>
+</script>
+
+<script type="text/javascript">
+    function PersonViewModel(data) {
+        this.persons = ko.mapping.fromJS(
+            data,
+            {});
+    }
+
+    PersonViewModel.prototype.Details = function (id) {
+        if (id >= 0) {
+            window.location.href = '/Home/Details/' + id;
+        }
+    };
+
+    PersonViewModel.prototype.Delete = function (id) {
+        if (id >= 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/Delete',
+                data: { id: id },
+                beforeSend: loadStart,
+                complete: loadStop,
+                dataType: 'json',
+                success: function (data) {
+                    ko.mapping.fromJS(data,{},this.persons);
+                }.bind(this)
+            });
+        } else {
+            ko.mapping.fromJS([],{},this.persons);
+        }
+    };
+    
+    function loadStart() {
+        $('#loading').show();
+    }
+    function loadStop() {
+        $('#loading').hide();
+    }
+    
+    $(function () {
+        $.ajax({
+            type: 'POST',
+            url: '/Home/GetPersons',
+            dataType: 'json',
+            success: function (data) {
+                ko.applyBindings(new PersonViewModel(data));
+            }.bind(this)
+    });
+    });
+</script>
+
 <table>
     <tr>
         <th>
@@ -19,27 +86,9 @@
         </th>
         <th></th>
     </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SurName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiddleName)
-            </td>
-            <td>
-                @Html.ActionLink("Delete","Delete", "Home", new {item.Id}, null)
-            </td>
-           <td>
-                @Html.ActionLink("Details", "Details", "Home", new {item.Id}, null)
-            </td>
-        </tr>
-    }
-
+    <tbody id="persons" data-bind="template: { name: 'personTemplate', foreach: persons }, visible: persons().length > 0">
+        
+    </tbody>
 </table>
 <p>
   @Html.ActionLink("На главную", "Index")

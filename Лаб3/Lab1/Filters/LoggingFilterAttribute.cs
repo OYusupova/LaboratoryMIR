@@ -24,7 +24,9 @@ namespace Lab.Filters
                 data = "Exception: " + filterContext.Exception.Message;
             else
             {
-                data = ((ViewResult)filterContext.Result).Model.ToString();
+                data = filterContext.Result is ViewResult
+                    ? ((ViewResult) filterContext.Result).Model.ToString()
+                    : string.Empty;
             }
             
             SaveLog(ip,action,data);

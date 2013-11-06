@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
+using Lab.ConfigSections;
 
-namespace Lab.Hendlers
+namespace Lab.Handlers
 {
-    public class ImageHendler: IHttpHandler
+    public class ImageHandler: IHttpHandler
     {
+        private static readonly ImageHandlerConfigSection ImageHandlerConfigSection = (ImageHandlerConfigSection)ConfigurationManager.GetSection("imageHandlerConfig");
         public void ProcessRequest(HttpContext context)
         {
             try
             {
-                var imagesDir = HttpContext.Current.Server.MapPath("~/Images");
+                var imagesDir = HttpContext.Current.Server.MapPath(ImageHandlerConfigSection.Path);
                 var images = Directory.GetFiles(imagesDir).Select(x=>new {Name = Path.GetFileNameWithoutExtension(x),Path = x});
                 var fileName = Path.GetFileNameWithoutExtension(context.Request.FilePath);
                 var filePath = images.FirstOrDefault(x => x.Name == fileName).Path;
                 var img = Image.FromFile(filePath);
-                
-                OverlayText(img, "Lab 3", Color.Red, new Font("Arial", 8), new Point(0, 0));
+
+                OverlayText(img, ImageHandlerConfigSection.Text , Color.Red, new Font("Arial", 8), new Point(0, 0));
 
                 var stream = new MemoryStream();
                 img.Save(stream, ImageFormat.Png);

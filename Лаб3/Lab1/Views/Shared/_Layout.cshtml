@@ -7,11 +7,12 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/MyCss")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/knockout")
 </head>
 <body>
     @RenderBody()
-
-    @Scripts.Render("~/bundles/jquery")
+@*    @Scripts.Render("~/bundles/jqueryval")*@
     @RenderSection("scripts", required: false)
 </body>
 </html>

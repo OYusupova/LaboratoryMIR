@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Migrations.Model;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using AutoMapper;
 using Core;
@@ -18,6 +21,8 @@ namespace Lab.Controllers
             Mapping.CreateMapping();
         }
 
+        
+
         public ActionResult Index()
         {
             return View();
@@ -25,16 +30,30 @@ namespace Lab.Controllers
 
         public ActionResult List()
         {
-            IEnumerable<PersonInfo> persons = DataAccessLayer.GetAllPersons();
-            IEnumerable<DataModel> models = Mapper.Map<IEnumerable<PersonInfo>, IEnumerable<DataModel>>(persons);
-            return View("ListView", models);
+            return View("ListView");
         }
 
+        [HttpPost]
+        public ActionResult GetPersonsForListView()
+        {
+            IEnumerable<PersonInfo> persons = DataAccessLayer.GetAllPersons();
+            IEnumerable<DataModel> models = Mapper.Map<IEnumerable<PersonInfo>, IEnumerable<DataModel>>(persons);
+            return Json(models.Select(x => new
+            {
+                x.Id,
+                x.FirstName,
+                x.MiddleName,
+                x.SurName
+            }));
+        }
+
+        [HttpPost]
         [LoggingFilter]
         public ActionResult Delete(int id)
         {
+            Thread.Sleep(5000);//Задержка добавлена для нагляности(чтоб шарики могли покружится:))
             DataAccessLayer.DeletePerson(id);
-            return List();
+            return GetPersonsForListView();
         }
 
         public ActionResult Details(int id)
@@ -55,8 +74,11 @@ namespace Lab.Controllers
             return View("Info",model);
         }
 
-        public PersonInfo person { get; set; }
-
-        public DataModel model { get; set; }
+        public ActionResult ShowError(string message)
+        {
+           
+            ViewBag.Error = message;
+            return View("Error");
+        }
     }
 }
