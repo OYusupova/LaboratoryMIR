@@ -64,7 +64,7 @@
     $(function () {
         $.ajax({
             type: 'POST',
-            url: '/Home/GetPersons',
+            url: '/Home/GetPersonsForListView',
             dataType: 'json',
             success: function (data) {
                 ko.applyBindings(new PersonViewModel(data));
