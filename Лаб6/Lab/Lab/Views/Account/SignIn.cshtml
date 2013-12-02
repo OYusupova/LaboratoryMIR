@@ -1,0 +1,28 @@
+﻿@using System.Web.Optimization
+
+@model Lab.Models.LoginModel
+
+@section PageStyle {
+    @Styles.Render("~/Content/SignIn")
+}
+@{
+    ViewBag.Title = "Авторизация";
+}
+
+<div class="container">
+    
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <h2 class="form-signin-heading">Вход</h2>
+        @Html.TextBoxFor(m=>m.UserName,new{@class="form-control", placeholder=Html.DisplayNameFor(m => m.UserName)})
+        @Html.ValidationMessageFor(m => m.UserName)
+        @Html.PasswordFor(m=>m.Password,new{@class="form-control", placeholder=Html.DisplayNameFor(m => m.Password)})
+        <label class="checkbox">
+            @Html.CheckBoxFor(m=>m.RememberMe,new{value="remember-me"})@Html.DisplayNameFor(m => m.RememberMe)
+        </label>
+        <button class="btn btn-lg btn-success" type="submit">Вход</button>
+        @Html.ActionLink("Регистрация", "Register", null, new {@class = "btn btn-primary btn-lg"}) 
+    }
+</div> <!-- /container -->

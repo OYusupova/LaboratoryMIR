@@ -1,0 +1,23 @@
+﻿@using System.Web.Optimization
+@{
+    ViewBag.Title = "Регистрация";
+}
+<div class="container">
+    <div class="jumbotron">
+        <h1>Вы вошли на страничку лаболаторной работы 6</h1>
+        
+        <div>
+            @Ajax.ActionLink("Долгая операция( OutputCache )","LongOperation","Home",new AjaxOptions(){HttpMethod = "POST", UpdateTargetId = "resultOperation"},new{@class="btn btn-primary btn-lg"})
+            @Ajax.ActionLink("Долгая операция( Cache )","LongOperation2","Home",new AjaxOptions(){HttpMethod = "POST", UpdateTargetId = "resultOperation2"},new{@class="btn btn-primary btn-lg"})
+        </div>
+        <div id="resultOperation">
+        </div>
+        <div id="resultOperation2">
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

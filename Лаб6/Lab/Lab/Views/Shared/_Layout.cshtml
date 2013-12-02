@@ -1,0 +1,43 @@
+﻿@using System.Web.Optimization
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>@ViewBag.Title</title>
+        @Styles.Render("~/Content/bootstrapCss")
+        @Styles.Render("~/Content/Site")
+        @RenderSection("PageStyle", required: false)
+
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+    </head>
+    <body>
+        <div class="container">
+            @if (Request.IsAuthenticated)
+            {
+                <text>
+                    Привет, @User.Identity.Name!
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) 
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Выход</a>
+                    }
+                </text>
+                <ul class="nav pull-right nav-tabs">
+                    <li class="active">
+                        @Html.ActionLink("Home","Index","Home")
+                    </li>
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                </ul>
+            }
+            @RenderBody()
+            @*    @Scripts.Render("~/bundles/jqueryval")*@
+            @RenderSection("scripts", required: false)
+        </div>
+    </body>
+</html>
